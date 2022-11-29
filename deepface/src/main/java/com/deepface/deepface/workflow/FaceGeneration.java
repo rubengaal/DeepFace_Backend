@@ -1,17 +1,17 @@
 package com.deepface.deepface.workflow;
 
+import com.deepface.deepface.business.ImageManager;
+import com.deepface.deepface.database.Image;
 import io.temporal.activity.ActivityInterface;
 import io.temporal.activity.ActivityMethod;
+import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 
 @ActivityInterface
 public interface FaceGeneration {
 
     @ActivityMethod
-    void uploadToDatabase(String dataUrl);
+    void startGenerating(String Id);
 
     @ActivityMethod
-    void startGenerating(String dataUrl);
-
-    @ActivityMethod
-    void startAnalyzing(String dataUrl);
+    void startAnalyzing(String Id);
 }

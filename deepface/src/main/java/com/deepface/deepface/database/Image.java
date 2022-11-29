@@ -6,6 +6,9 @@ import javax.persistence.Id;
 @Document("Images")
 public class Image {
 
+    public Image() {
+    }
+
     @Id
     private String id;
     private String dataUrl;
@@ -15,6 +18,7 @@ public class Image {
     private String pngUrl;
     private String detailObjUrl;
     private String normalsUrl;
+
 
     public Image(String dataUrl,
                  String name,
@@ -36,5 +40,69 @@ public class Image {
     public Image(String dataUrl, String name) {
         this.dataUrl = dataUrl;
         this.name = name;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public String getDataUrl() {
+        return dataUrl;
+    }
+
+    public void setDataUrl(String dataUrl) {
+        this.dataUrl = dataUrl;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getMtlUrl() {
+        return mtlUrl;
+    }
+
+    public void setMtlUrl(String mtlUrl) {
+        this.mtlUrl = mtlUrl;
+    }
+
+    public String getObjUrl() {
+        return objUrl;
+    }
+
+    public void setObjUrl(String objUrl) {
+        this.objUrl = objUrl;
+    }
+
+    public String getPngUrl() {
+        return pngUrl;
+    }
+
+    public void setPngUrl(String pngUrl) {
+        this.pngUrl = pngUrl;
+    }
+
+    public String getDetailObjUrl() {
+        return detailObjUrl;
+    }
+
+    public void setDetailObjUrl(String detailObjUrl) {
+        this.detailObjUrl = detailObjUrl;
+    }
+
+    public String getNormalsUrl() {
+        return normalsUrl;
+    }
+
+    public void setNormalsUrl(String normalsUrl) {
+        this.normalsUrl = normalsUrl;
     }
 }

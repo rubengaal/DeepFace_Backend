@@ -3,20 +3,30 @@ package com.deepface.deepface.business;
 import com.deepface.deepface.database.Image;
 import com.deepface.deepface.repository.ImageRepository;
 import io.temporal.api.common.v1.ActivityTypeOrBuilder;
+import org.apache.commons.lang.ObjectUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.codec.ServerSentEvent;
 import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
+import reactor.core.publisher.Flux;
 
+import java.time.Duration;
+import java.util.ArrayList;
 import java.util.List;
 
 @Component
 public class ImageManager {
 
+    @Autowired
     ImageRepository imageRepo;
 
-    public Boolean InsertImage(String name, String dataUrl){
+    public ImageManager() {
+    }
+
+    public Boolean InsertImage(Image image){
 
         try{
-            imageRepo.save(new Image(dataUrl, name));
+            imageRepo.save(image);
         }
         catch(Exception e){
             return false;
@@ -35,6 +45,22 @@ public class ImageManager {
         }
     }
 
+    public Flux<ServerSentEvent<Image>> getImage(String id) {
+
+         if (id != null && !id.isBlank() ){
+
+             return Flux.interval(Duration.ofSeconds(20))
+                     .map(sequence -> ServerSentEvent.<Image>builder().id(String.valueOf(sequence))
+                             .event("image-update-event").data(imageRepo.findImageById(id))
+                             .build());
+
+         }
+        return Flux.interval(Duration.ofSeconds(20))
+                .map(sequence -> ServerSentEvent.<Image>builder().id(String.valueOf(sequence))
+                        .event("image-update-event").data(null)
+                        .build());
+    }
+
     public Image findImageByName(String name){
         try{
             return imageRepo.findImageById(name);
@@ -44,16 +70,4 @@ public class ImageManager {
         }
     }
 
-    public Image UpdateImage(String id, Image image){
-        Image updatedImage = imageRepo.updateImage(id, image);
-        if (updatedImage != null){
-            return updatedImage;
-        }else{
-            throw new IllegalArgumentException("The given id is not valid. Id: " + id);
-        }
-    }
-
-    public List<Image> getAllImages(){
-        return imageRepo.getAllImages();
-    }
 }

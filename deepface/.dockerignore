@@ -1,0 +1,36 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: deepcheap-backend
+spec:
+  selector:
+    matchLabels:
+      app: deepcheap-backend
+  template:
+    metadata:
+      labels:
+        app: deepcheap-backend
+    spec:
+      containers:
+      - name: deepcheap-backend
+        image: deepcheap-backend
+        ports:
+        - containerPort: 3000
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: load-balancer
+
+
+  labels:
+    app: deepcheap-backend
+spec:
+  type: LoadBalancer
+  ports:
+  - port: 80
+    targetPort: 80
+    protocol: TCP
+    nodePort: 61000
+  selector:
+    app: deepcheap-backend
